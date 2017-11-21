@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var  {feedReferral,getBlockNumber, getBalance,ethContributedBy,totalEthContributed,totalTokensSold} =  require("../integrations/ethereum");
+var  {feedReferral,getBlockNumber, getBalance,ethContributedBy,totalEthContributed1,totalTokensSold} =  require("../integrations/ethereum");
 
 router.get('/blocknumber', async function(req, res, next) {
     console.log("Inside /blockNumber");
@@ -51,7 +51,7 @@ router.get('/totalEthContributed', async function(req, res, next) {
 
     let totalEthraised;
     try {
-        totalEthraised = await totalEthContributed();
+        totalEthraised = await totalEthContributed1();
     } catch(err){
         console.log(err);
         res.send({error: err })
