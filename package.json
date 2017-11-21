@@ -1,0 +1,22 @@
+{
+  "name": "kryptoin-back",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "bitcoind-rpc": "^0.7.0",
+    "axios": "^0.17.0",
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "express": "~4.15.5",
+    "jsonrpc-node": "^1.2.93",
+    "morgan": "~1.9.0",
+    "node-bittrex-api": "^0.7.6",
+    "node-litecoin": "^1.0.1",
+    "serve-favicon": "~2.4.5",
+    "web3": "^1.0.0-beta.24"
+  }
+}
