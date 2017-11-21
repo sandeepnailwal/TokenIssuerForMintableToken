@@ -27,10 +27,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/wallets', wallets);
-app.use('/kryptoin', kryptoin);
-app.use('/litecoin', litecoin);
-app.use('/bitcoin', bitcoin);
 app.use('/ethereum', ethereum);
 
 
