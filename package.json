@@ -6,11 +6,12 @@
     "start": "node app"
   },
   "dependencies": {
-    "bitcoind-rpc": "^0.7.0",
     "axios": "^0.17.0",
+    "bitcoind-rpc": "^0.7.0",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "ethereum-address": "0.0.4",
     "express": "~4.15.5",
     "jsonrpc-node": "^1.2.93",
     "morgan": "~1.9.0",

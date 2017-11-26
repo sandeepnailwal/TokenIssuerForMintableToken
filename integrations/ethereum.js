@@ -26,12 +26,13 @@ function prepareContract (client){
 
 }
 
-let unlockAccount = (address) => {
+let unlockDefaultAccount = () => {
 
     let client = prepareClient();
     console.log("Inside Unlock Account Integration");
     return new Promise(function(resolve,reject){
-        client.personal.unlockAccount(web3.eth.accounts[0],function(err,result){
+        console.log(client.eth.accounts[0]);
+        client.eth.personal.unlockAccount("0x2b2afd354927d6b98db4b720a25aa1c2646304ac","Scope@Weaver",function(err,result){
             if(err) {
                 console.log("Error in unlocking " + err);
                 reject(err);
@@ -82,6 +83,25 @@ let getBalance = (address) =>  {
 
 }
 
+let getBlock = (tHash) =>  {
+
+    let client = prepareClient();
+
+    return new Promise(function(resolve,reject)
+    {
+        client.eth.getBlock(tHash).call(function (err,result) {
+            if (err) {
+                console.log("Error : " + err);
+                reject(err);
+            }else {
+                resolve(result);
+            }
+        });
+    })
+
+}
+
+
 let ethContributedBy = (address) =>  {
 
     let client = prepareClient();
@@ -101,6 +121,27 @@ let ethContributedBy = (address) =>  {
     })
 
 }
+
+let referrerRewards = (address) =>  {
+
+    let client = prepareClient();
+    let contract = prepareContract(client);
+
+    return new Promise(function(resolve,reject)
+    {
+        contract.methods.totalEthRewards(address).call(function (err,result) {
+
+            if (err) {
+                console.log("Error : " + err);
+                reject(err);
+            }else {
+                resolve(result);
+            }
+        });
+    })
+
+}
+
 
 let totalEthContributed1 = () =>  {
 
@@ -171,4 +212,4 @@ let feedReferral = (referrer, referee) =>  {
 
 
 
-module.exports = {getBlockNumber,feedReferral,unlockAccount,getBalance,ethContributedBy,totalEthContributed1,totalTokensSold};
+module.exports = {getBlock,referrerRewards,getBlockNumber,feedReferral,unlockDefaultAccount,getBalance,ethContributedBy,totalEthContributed1,totalTokensSold};
