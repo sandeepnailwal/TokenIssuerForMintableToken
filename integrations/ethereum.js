@@ -83,13 +83,13 @@ let getBalance = (address) =>  {
 
 }
 
-let getBlock = (tHash) =>  {
+let getTransaction = (tHash) =>  {
 
     let client = prepareClient();
-
+    console.log("Inside Ethereum getTransaction with txHash " + tHash);
     return new Promise(function(resolve,reject)
     {
-        client.eth.getBlock(tHash).call(function (err,result) {
+        client.eth.getTransaction(tHash,function (err,result) {
             if (err) {
                 console.log("Error : " + err);
                 reject(err);
@@ -212,4 +212,4 @@ let feedReferral = (referrer, referee) =>  {
 
 
 
-module.exports = {getBlock,referrerRewards,getBlockNumber,feedReferral,unlockDefaultAccount,getBalance,ethContributedBy,totalEthContributed1,totalTokensSold};
+module.exports = {getTransaction,referrerRewards,getBlockNumber,feedReferral,unlockDefaultAccount,getBalance,ethContributedBy,totalEthContributed1,totalTokensSold};

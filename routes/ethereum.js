@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var ethereum_address = require('ethereum-address');
 
-var  {feedReferral,getBlockNumber, getBalance,ethContributedBy,totalEthContributed1,totalTokensSold,unlockDefaultAccount,referrerRewards,getBlock} =  require("../integrations/ethereum");
+var  {feedReferral,getBlockNumber, getBalance,ethContributedBy,totalEthContributed1,totalTokensSold,unlockDefaultAccount,referrerRewards,getBlock,getTransaction} =  require("../integrations/ethereum");
 
 router.get('/blocknumber', async function(req, res, next) {
     console.log("Inside /blockNumber");
@@ -89,30 +89,22 @@ router.get('/:userAddress/referrerRewards', async function(req, res, next) {
     res.send({referrerRewards:totalReward})
 });
 
-router.get('/:userTransactionHash/numConfirmations', async function(req, res, next) {
+router.get('/:transactionBlockNo/numConfirmations', async function(req, res, next) {
 
     console.log("Inside /numConfirmations");
-    let userTransactionHash = req.params.userTransactionHash;
+    let transactionBlock = req.params.transactionBlockNo;
 
     let requiredBlock;
     let currentBlockNumber;
 
     try {
-        currentBlockNumber = await getBlockNumber();
-        console.log(currentBlockNumber);
-    } catch(err){
-        console.log(err);
-        res.send({error: err })
-    }
-
-    try {
-        requiredBlock = await getBlock(userTransactionHash);
+        requiredBlock = await getBlockNumber();
         console.log(requiredBlock);;
     } catch(err){
         console.log(err);
         res.send({error: err })
     }
-    res.send({numOfConfirmations:requiredBlock.number - currentBlockNumber})
+    res.send({numOfConfirmations:requiredBlock - transactionBlock })
 });
 
 
@@ -156,11 +148,12 @@ router.post('/feedReferral', async function(req, res, next) {
     let referrer = req.body.referrer;
 
     //console.log(req);
-    let status,unlockStatus;
+    let status,unlockStatus,blocknumber;
     try {
         unlockStatus = await unlockDefaultAccount();
         status = await feedReferral(referrer,referee);
-        res.send({status : status,unlockStatus:unlockStatus});
+        blocknumber = await getBlockNumber();
+        res.send({status : status,unlockStatus:unlockStatus,blockNumber:blocknumber});
     } catch(err){
         console.log(err);
         res.send({error: err});
