@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var ethereum_address = require('ethereum-address');
 
-var  {feedReferral,getBlockNumber, getBalance,ethContributedBy,totalEthContributed1,totalTokensSold,unlockDefaultAccount,referrerRewards,getBlock,getTransaction} =  require("../integrations/ethereum");
+var  {feedReferral,getBlockNumber, getBalance,ethContributedBy,totalEthContributed1,totalTokensSold,unlockDefaultAccount,referrerRewards,getBlock,getTransaction,getReferrerIndex,referrerRewardsByIndex} =  require("../integrations/ethereum");
 
 router.get('/blocknumber', async function(req, res, next) {
     console.log("Inside /blockNumber");
@@ -58,7 +58,6 @@ router.get('/:userAddress/isValid', async function(req, res, next) {
 
 });
 
-
 router.get('/:userAddress/ethContributedBy', async function(req, res, next) {
 
     console.log("Inside /balance");
@@ -88,6 +87,26 @@ router.get('/:userAddress/referrerRewards', async function(req, res, next) {
     }
     res.send({referrerRewards:totalReward})
 });
+
+router.get('/:userAddress/referrerRewardsHistory', async function(req, res, next) {
+
+    console.log("Inside /referrerRewardsHistory");
+    let userAddress = req.params.userAddress;
+
+    let rewardHistory=[],index;
+    try {
+        index = await getReferrerIndex(userAddress);
+        for(let i = 1;i<=index;i++){
+            rewardHistory.push(await referrerRewardsByIndex(userAddress,i));
+            //rewardHistory{"rewardHistory":rw};
+        }
+    } catch(err){
+        console.log(err);
+        res.send({error: err })
+    }
+    res.send({rewardHistory:rewardHistory,totalRedemptions:index});
+});
+
 
 router.get('/:transactionBlockNo/numConfirmations', async function(req, res, next) {
 
